@@ -1,5 +1,7 @@
-var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
-var packageBody,ground
+var helicopterIMG, helicopterSprite;
+var packageSprite,package1Sprite,package2Sprite,packageIMG,package2IMG,package3IMG;
+var packageBody,packageBody1,packageBody2,ground;
+var line1,line2,line3; 
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
@@ -9,6 +11,10 @@ function preload()
 {
 	helicopterIMG=loadImage("helicopter.png")
 	packageIMG=loadImage("package.png")
+	package2IMG=loadImage("package1.png")
+	package3IMG=loadImage("package2.png")
+
+
 }
 
 function setup() {
@@ -20,19 +26,42 @@ function setup() {
 	packageSprite.addImage(packageIMG)
 	packageSprite.scale=0.2
 
+	package1Sprite=createSprite(480, 80, 10,10);
+	package1Sprite.addImage(package2IMG)
+	package1Sprite.scale=0.2
+
+	package2Sprite=createSprite(330, 80, 10,10);
+	package2Sprite.addImage(package3IMG)
+	package2Sprite.scale=0.2
+
+
 	helicopterSprite=createSprite(width/2, 200, 10,10);
 	helicopterSprite.addImage(helicopterIMG)
 	helicopterSprite.scale=0.6
 
 	groundSprite=createSprite(width/2, height-35, width,10);
-	groundSprite.shapeColor=color(255)
+	groundSprite.shapeColor=color(255);
+
+
+	line1=createSprite(width/2,height-50,200,20);
+	line1.shapeColor=color("red");
+	line2=createSprite(900,610,20,100);
+	line2.shapeColor=color("red");
+	line3=createSprite(700,610,20,100);
+	line3.shapeColor=color("red");
 
 
 	engine = Engine.create();
 	world = engine.world;
 
-	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:1, isStatic:true});
+	packageBody = Bodies.circle(width/2 , 200 , 5 , { isStatic:true});
 	World.add(world, packageBody);
+
+	packageBody1 = Bodies.circle(width/2 , 200 , 40 , { isStatic:true});
+	World.add(world, packageBody1);
+
+	packageBody2 = Bodies.circle(width/2 , 200 , 5 , { isStatic:true});
+	World.add(world, packageBody2);
 	
 
 	//Create a Ground
@@ -50,26 +79,50 @@ function draw() {
   background(0);
   packageSprite.x= packageBody.position.x 
   packageSprite.y= packageBody.position.y 
-  if (packageSprite.isTouching(groundSprite)){
+
+  package1Sprite.x= packageBody1.position.x 
+  package1Sprite.y= packageBody1.position.y 
+
+  package2Sprite.x= packageBody2.position.x 
+  package2Sprite.y= packageBody2.position.y 
+
+if(packageSprite.collide(line1)){
 	textSize(32);
-	fill(0, 102, 153);
-	text('The package has been delivered successfully', 10, 60);
-console.log("Nice");	
+fill("yellow");
+text('The Packages have been delivered succesfully', 10, 60);
+
+}
+  packageSprite.collide(line1);
+  package1Sprite.collide(line1);
+  package2Sprite.collide(line1);
+
+  packageSprite.collide(line2);
+  package1Sprite.collide(line2);
+  package2Sprite.collide(line2);
+
+  packageSprite.collide(line3);
+  package1Sprite.collide(line3);
+  package2Sprite.collide(line3);
+
+
   
- }
   drawSprites();
-  
+ 
 }
 
 function keyPressed() {
- if (keyCode === DOWN_ARROW) {
-    // Look at the hints in the document and understand how to make the package body fall only on press of the Down arrow key.
+	if (keyCode === DOWN_ARROW) {
+	   Matter.Body.setStatic(packageBody,false);
+	   
+	 }
 
-	Matter.Body.setStatic(packageBody,false);
-	
-  }
-}
- 
+	 if (keyCode === DOWN_ARROW) {
+		Matter.Body.setStatic(packageBody1,false);
+		
+	  }
 
-
-
+	  if (keyCode === DOWN_ARROW) {
+		Matter.Body.setStatic(packageBody2,false);
+		
+	  }
+   }
