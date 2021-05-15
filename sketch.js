@@ -89,7 +89,7 @@ function draw() {
 if(packageSprite.collide(line1)){
 	textSize(32);
 fill("yellow");
-text('The Packages have been delivered succesfully', 10, 60);
+text('The Packages have been delivered successfully', 10, 60);
 
 }
   packageSprite.collide(line1);
